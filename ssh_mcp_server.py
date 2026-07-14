@@ -1,12 +1,13 @@
 """
-ssh_mcp_server.py — KHUSUS HERMES AGENT
-MCP Server untuk kontrol VPS Biznet (idxbandarhunter.com) via SSH + Cloudflare Tunnel.
+ssh_mcp_server.py — SSH MCP Server untuk Hermes Agent
+
+MCP server untuk mengontrol server/VPS jarak jauh via SSH (paramiko).
+Open source, bisa dipakai umum — sesuaikan .env dengan server Anda.
 
 Tools: ssh_exec, ssh_read_file, ssh_write_file, ssh_list_dir, check_hermes_services
 Transport: stdio (native Hermes MCP)
 
-Path sudah dioptimasi untuk WSL + OneDrive.
-Key: /home/zorro/.ssh/Jember0807.pem
+Konfigurasi dibaca dari .env (lihat .env.example).
 """
 
 import os
@@ -18,17 +19,18 @@ from dotenv import load_dotenv
 from fastmcp import FastMCP
 from typing import Optional
 
-# Load .env from same directory (WSL compatible)
+# Load .env from same directory
 _DIR = Path(__file__).parent
 load_dotenv(_DIR / ".env", override=True)
 
-VPS_HOST = os.getenv("VPS_HOST", "103.93.163.67")
+# Nilai default placeholder — override lewat .env (jangan hardcode di sini)
+VPS_HOST = os.getenv("VPS_HOST", "YOUR_VPS_HOST")
 VPS_PORT = int(os.getenv("VPS_PORT", "22"))
-VPS_USER = os.getenv("VPS_USER", "J-Squad007")
-VPS_KEY_PATH = os.getenv("VPS_KEY_PATH", "/home/zorro/.ssh/Jember0807.pem")
+VPS_USER = os.getenv("VPS_USER", "YOUR_VPS_USER")
+VPS_KEY_PATH = os.getenv("VPS_KEY_PATH", "~/.ssh/id_rsa")
 CMD_TIMEOUT = int(os.getenv("CMD_TIMEOUT", "60"))
 
-mcp = FastMCP("biznet-vps")
+mcp = FastMCP("ssh-remote")
 
 # Simple connection cache
 @lru_cache(maxsize=2)
@@ -92,7 +94,7 @@ def ssh_write_file(path: str, content: str) -> str:
         client.close()
 
 @mcp.tool()
-def ssh_list_dir(path: str = "/home/J-Squad007") -> str:
+def ssh_list_dir(path: str = "~") -> str:
     """List direktori di VPS."""
     client = _connect()
     try:

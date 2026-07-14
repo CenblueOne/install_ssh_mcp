@@ -11,12 +11,10 @@ env/
 *.key
 *.p12
 *.pfx
+.env
 .env.bak
 .env.local
 .env.*.local
-
-# Keep the empty template only
-!.env
 
 # Logs
 *.log
