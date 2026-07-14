@@ -1,0 +1,14 @@
+{
+  "_comment": "Contoh konfigurasi MCP. Sesuaikan 'command' & 'args' (path ssh_mcp_server.py) dengan lokasi di komputer/server Anda.",
+  "_comment2": "Server ini MCP stdio — bisa dipakai SEMUA client AI yang mendukung MCP (Claude Desktop, Hermes, Cursor, VS Code, dll).",
+
+  "mcpServers": {
+    "ssh-remote": {
+      "command": "python",
+      "args": [
+        "PATH_KE_FOLDER_ANDA/install_ssh_mcp/ssh_mcp_server.py"
+      ],
+      "env": {}
+    }
+  }
+}
